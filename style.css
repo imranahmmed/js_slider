@@ -48,3 +48,7 @@ img {
     font-size: 32px;
     cursor: pointer;
 }
+
+.smooth {
+    transition: all 1s ease;
+}
