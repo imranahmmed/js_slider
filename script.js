@@ -3,9 +3,36 @@ let slidesArr = Array.from(slides);
 
 let nextArrow = document.querySelector(".next");
 let prevArrow = document.querySelector(".prev");
-console.log(slidesArr)
-console.log(nextArrow)
-console.log(prevArrow)
+
+
+let dots = document.querySelectorAll(".dot");
+let dotsArr = Array.from(dots);
+
+
+function nextPrevDots() {
+    let currentdot = document.querySelector(".dot.active");
+    let currentdotIndex = dotsArr.indexOf(currentdot);
+    console.log(currentdotIndex);
+
+    let nextDot;
+    let prevDot;
+
+    if (currentdotIndex == 0) {
+        prevDot = dotsArr[dotsArr.length - 1];
+    } else {
+        prevDot = dotsArr[currentdotIndex - 1];
+    }
+
+    if (currentdotIndex == dotsArr.length - 1) {
+        nextDot = dotsArr[0];
+    } else {
+        nextDot = dotsArr[currentdotIndex + 1];
+    }
+
+    console.log("next", nextDot);
+    console.log("prev", prevDot);
+    return [nextDot, prevDot];
+}
 
 function nextPrev() {
     let currentSlide = document.querySelector(".slide.active");
@@ -25,9 +52,11 @@ function nextPrev() {
     } else {
         next = slidesArr[currentIndex + 1];
     }
+
+    console.log("next", next);
+    console.log("prev", prev);
     return [next, prev];
 }
-
 
 function slidePosition() {
     let currentSlide = document.querySelector(".slide.active");
@@ -45,21 +74,48 @@ function slidePosition() {
 
         slide.addEventListener("transitionend", () => {
             slide.classList.remove("smooth");
-        })
-
+        });
     });
+};
 
-}
 
 nextArrow.addEventListener("click", () => {
     let currentSlide = document.querySelector(".slide.active");
-    let [next] = nextPrev();
+    let currentdot = document.querySelector(".dot.active");
+    let [next, prev] = nextPrev();
+    let [nextDot, prevDot] = nextPrevDots();
 
     currentSlide.classList.remove("active");
+    currentdot.classList.remove("active");
+
     currentSlide.classList.add("smooth");
     currentSlide.style.transform = "translateX(-100%)";
+
     next.classList.add("active");
+    nextDot.classList.add("active");
     next.classList.add("smooth");
     next.style.transform = "translateX(0)";
+    slidePosition()
+});
+
+
+prevArrow.addEventListener("click", () => {
+    let currentSlide = document.querySelector(".slide.active");
+    let currentdot = document.querySelector(".dot.active");
+    let [next, prev] = nextPrev();
+    let [nextDot, prevDot] = nextPrevDots();
+
+    console.log(prev);
+    console.log(currentSlide);
+
+    currentSlide.classList.add("smooth");
+    currentSlide.classList.remove("active");
+    currentdot.classList.remove("active");
+    currentSlide.style.transform = "translateX(0)";
+
+    prev.classList.add("active");
+    prevDot.classList.add("active");
+    prev.classList.add("smooth");
+    prev.style.transform = "translateX(100%)";
     slidePosition()
 });
